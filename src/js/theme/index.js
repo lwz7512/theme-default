@@ -3,6 +3,7 @@ var keyboard =   require('./keyboard');
 var navigation = require('./navigation');
 var sidebar =    require('./sidebar');
 var toolbar =    require('./toolbar');
+var listnav =    require('./listnav');
 
 var gitbook = window.gitbook;
 
@@ -28,6 +29,9 @@ function init() {
             sidebar.toggle();
         }
     });
+
+    // init list navigation @2019/09/19
+    listnav.init();
 }
 
 gitbook.events.on('start', init);
