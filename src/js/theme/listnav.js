@@ -5,9 +5,11 @@ var platform = require('./platform');
 
 var gitbook = window.gitbook;
 
-var linksInPart = []; // url, url, ...
-var lielsInPart = []; // li, li,  ...
-var currentIndex= 0; // index by li sequence
+var linksInPart = [];    // url, url, ...
+var lielsInPart = [];    // li, li,  ...
+var currentIndex= 0;     // index by li sequence
+var inside      = false; // drill down into article ?
+
 
 /*
     Get current scroller element
@@ -107,11 +109,12 @@ function handleLinkClick(e) {
     $('.navigation-prev').attr('href', '');
     $('.navigation-next').attr('href', '');
 
-    // remember current position
-    currentIndex = linksInPart.indexOf(href);
-
     // load article snippet...
     if (href) handleNavigation(href, title, true);
+
+    // remember current position
+    currentIndex = linksInPart.indexOf(href);
+    inside = true;
 }
 
 function stopLinkClick(e) {
@@ -120,6 +123,7 @@ function stopLinkClick(e) {
 }
 
 function navtoPrev(e) {
+  if(!inside) return;
   if(currentIndex == 0) return console.log('>>> TO THE FIRST!');
 
   currentIndex --;
@@ -132,7 +136,7 @@ function navtoPrev(e) {
 }
 
 function navtoNext(e) {
-  if(currentIndex == 0) return; // switch in parts...
+  if(!inside) return; // switch in parts...
   if(currentIndex == linksInPart.length-1) return console.log('>>> TO THE END!');
 
   currentIndex ++;
@@ -173,12 +177,10 @@ gitbook.events.on('page.change', function() {
     if(a) linksInPart.push(a.getAttribute('href'));
     if(a) lielsInPart.push(a);
   });
-  // console.log('linksInPart NUM: ');
-  // console.log(linksInPart.length);
 
   // each time page change, reset the navigation id;
   currentIndex = 0;
-
+  inside       = false; // IMPORTANT FLAG !!!
 });
 
 
