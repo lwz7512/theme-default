@@ -1,3 +1,9 @@
+/**
+ * Authored by lwz7512@2018/09/17
+ *
+ * @param  {[type]} 'jquery' [description]
+ * @return {[type]}          [description]
+ */
 var $ = require('jquery');
 var url = require('url');
 var loading = require('./loading');
@@ -48,15 +54,6 @@ function handleNavigation(relativeUrl, title, push) {
               $('.markdown-section').empty();
               $('.markdown-section').append(newArticle);
 
-              $scroller = getScroller();
-
-              $scroller.animate({
-                  scrollTop: 0
-              }, 400, 'swing', function() {
-                  // Reset scroll binding when finished
-                  // console.log('>>> scrolled!');
-              });
-
               // lazy disappear for better experience ...@2018/09/19
               setTimeout(function(){
                 deferred.resolve();
@@ -64,6 +61,15 @@ function handleNavigation(relativeUrl, title, push) {
             }
         });
     }).promise();
+
+    $scroller = getScroller();
+
+    $scroller.animate({
+        scrollTop: 0
+    }, 400, 'swing', function() {
+        // Reset scroll binding when finished
+        // console.log('>>> scrolled!');
+    });
 
     return loading.show(
         promise
@@ -132,7 +138,6 @@ function navtoPrev(e) {
   var href   = linksInPart[currentIndex];
   var title = lielsInPart[currentIndex].textContent;
   handleNavigation(href, title, true);
-  // console.log('load: '+href+'#'+title);
 }
 
 function navtoNext(e) {
@@ -145,7 +150,6 @@ function navtoNext(e) {
   var href   = linksInPart[currentIndex];
   var title = lielsInPart[currentIndex].textContent;
   handleNavigation(href, title, true);
-  // console.log('load: '+href+'#'+title);
 }
 
 function init() {
