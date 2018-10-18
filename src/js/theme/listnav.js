@@ -9,6 +9,9 @@ var url = require('url');
 var loading = require('./loading');
 var platform = require('./platform');
 
+var markdown = require( "markdown" ).markdown; // @2018/10/18
+// console.log( markdown.toHTML( "Hello *World*!" ) );
+
 var gitbook = window.gitbook;
 
 var linksInPart = [];    // url, url, ...
@@ -34,7 +37,8 @@ function getScroller() {
 function handleNavigation(relativeUrl, title, push) {
 
     var uri = url.resolve(window.location.pathname, relativeUrl);
-
+    console.log('loading:', uri);
+    var fileType = uri.substr(uri.lastIndexOf('.')+1);
     // reset the location
     location.href = location.href.split('#')[0]+'#'+title;
 
@@ -46,18 +50,20 @@ function handleNavigation(relativeUrl, title, push) {
             headers:{
                 'Access-Control-Expose-Headers': 'X-Current-Location'
             },
-            success: function(html, status, xhr) {
+            success: function(content, status, xhr) {
               // Update title
               document.title = title+' . '+$(document).data('title');
-
+              // add markdown Support @2018/10/18
+              var html = (fileType=='md')?markdown.toHTML(content):content;
               var newArticle = '<h2 style="text-align: center">'+title+'</h2>'+html;
+
               $('.markdown-section').empty();
               $('.markdown-section').append(newArticle);
 
-              // lazy disappear for better experience ...@2018/09/19
+              // lazy disappear for better/sensible UI experience ...@2018/09/19
               setTimeout(function(){
                 deferred.resolve();
-              }, 100);
+              }, 200);
             }
         });
     }).promise();

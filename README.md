@@ -22,10 +22,13 @@
 
 ### Development Flow
 
+* clone this into working directory
+* create your gitbook project in the same directory as this repository
+* $ npm install
 * edit js/less files in this project for specific function
-* modify build.sh to copy theme.js & style.css to your gitbook root directory
+* MODIFY package.json line: 25, change prepublish script 'yan' to your gitbook project name
 * npm run prepublish
-* refresh http://localhost:400
+* refresh http://localhost:4000
 
 
 This is the default theme for GitBook since version `3.0.0`.

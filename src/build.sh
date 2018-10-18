@@ -12,15 +12,21 @@ mkdir -p _assets/ebook/
 echo 'browserify theme...'
 browserify src/js/theme/index.js | uglifyjs -mc > _assets/website/theme.js
 echo 'theme rebuild!'
-# to your gitbook project directory
-# yan is in the same directory as theme-default
-cp _assets/website/theme.js ../yan/_book/gitbook/
+
+# NOTE, modify 'yan' to your gitbook project directory
+# NOTE, yan is in the same directory as theme-default
+cp _assets/website/theme.js ../"$1"/_book/gitbook/
+cp _assets/website/theme.js ../"$1"/build/gitbook/
 
 # Compile Website CSS
 lessc -clean-css src/less/website.less _assets/website/style.css
-# to your gitbook project directory
-# # yan is in the same directory as theme-default
-cp _assets/website/style.css ../yan/_book/gitbook/
+
+# NOTE, modify 'yan' to your gitbook project directory
+# NOTE, yan is in the same directory as theme-default
+cp _assets/website/style.css ../"$1"/_book/gitbook/
+cp _assets/website/style.css ../"$1"/build/gitbook/
+
+echo "copied theme.js and style.css to $1 !"
 
 # Compile eBook CSS
 # lessc -clean-css src/less/ebook.less _assets/ebook/ebook.css
